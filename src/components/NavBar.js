@@ -25,7 +25,7 @@ export default function NavBar({ searchTerm, setSearchTerm }) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "#ff007f" }}>
+      <AppBar position="sticky" elevation={1} sx={{ bgcolor: "#ff007f" }}>
         <Toolbar sx={{ justifyContent: "center", gap: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <IconButton onClick={() => navigate("/")}>
