@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Favourites from "./pages/favourites.js";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Nav from "./components/NavBar";
+import { useDispatch } from "react-redux";
+import { loadUserFavourites } from "./store/favouritesSlice";
+import Address from "./pages/address.js";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserFavourites()); // ✅ load on app mount (or refresh)
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -19,9 +27,8 @@ function App() {
             element={<Home searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/favourites" element={<Favourites />} /> {/* ✅ Add this */}
+          <Route path="/favourites" element={<Favourites />} />
+          <Route path="/address" element={<Address />} />
         </Routes>
       </Box>
     </BrowserRouter>

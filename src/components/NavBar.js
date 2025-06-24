@@ -12,15 +12,26 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function NavBar({ searchTerm, setSearchTerm }) {
   const navigate = useNavigate();
-  const username = localStorage.getItem("currentUser"); // updated key name
+  const fullName = localStorage.getItem("currentUserName");
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    navigate("/login");
-    window.location.reload(); // ensures navbar updates
+    localStorage.removeItem("currentUserName");
+    window.location.reload(); // ensures all UI updates
+  };
+
+  const handleCartClick = () => {
+    const currentUser = localStorage.getItem("currentUserName");
+    if (currentUser) {
+      navigate("/favourites");
+    } else {
+      alert("Please log in to access your cart.");
+      navigate("/login");
+    }
   };
 
   return (
@@ -38,16 +49,16 @@ export default function NavBar({ searchTerm, setSearchTerm }) {
           <Button
             color="inherit"
             size="large"
-            onClick={() => navigate("/favourites")}
+            onClick={handleCartClick}
             sx={{ fontSize: "2rem" }}
           >
-            🤍
+            <ShoppingCartIcon />
           </Button>
 
-          {username ? (
+          {fullName ? (
             <>
               <Typography variant="body1" sx={{ mx: 2 }}>
-                Welcome, {username}
+                Welcome, {fullName}
               </Typography>
               <Button color="inherit" onClick={handleLogout}>
                 Logout

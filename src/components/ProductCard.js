@@ -3,8 +3,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Box,
-  IconButton
+  Box
 } from "@mui/material";
 
 const ProductCard = ({ product, onClick }) => (

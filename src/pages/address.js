@@ -12,19 +12,15 @@ import {
   DialogActions,
   Card,
   CardContent,
-  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Address() {
   const navigate = useNavigate();
-  const currentUser = localStorage.getItem("currentUserName ");
+  const currentUser = localStorage.getItem("currentUser");
 
   const [addresses, setAddresses] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
   const [notLoggedIn, setNotLoggedIn] = useState(false);
 
@@ -49,8 +45,8 @@ export default function Address() {
       return;
     }
 
-    const all = JSON.parse(localStorage.getItem("addresses")) || {};
-    setAddresses(all[currentUser] || []);
+    const allAddresses = JSON.parse(localStorage.getItem("addresses")) || {};
+    setAddresses(allAddresses[currentUser] || []);
   }, [currentUser]);
 
   const saveAddresses = (updatedList) => {
@@ -60,7 +56,7 @@ export default function Address() {
     setAddresses(updatedList);
   };
 
-  const handleSubmit = () => {
+  const handleAddAddress = () => {
     if (!l1 || !zip || !state) {
       setError("Please fill in all required fields.");
       return;
@@ -71,38 +67,22 @@ export default function Address() {
       return;
     }
 
-    const newAddress = { line1: l1, line2: l2, zipCode: zip, state };
+    const newAddress = {
+      line1: l1,
+      line2: l2,
+      zipCode: zip,
+      state: state,
+    };
 
-    let updatedList = [...addresses];
-    if (editIndex !== null) {
-      updatedList[editIndex] = newAddress;
-    } else {
-      updatedList.push(newAddress);
-    }
-
+    const updatedList = [...addresses, newAddress];
     saveAddresses(updatedList);
+
     setShowForm(false);
-    setEditIndex(null);
-    setl1(""); setl2(""); setzip(""); setstate("");
     setError("");
-  };
-
-  const handleEdit = (index) => {
-    const addr = addresses[index];
-    setl1(addr.line1);
-    setl2(addr.line2 || "");
-    setzip(addr.zipCode);
-    setstate(addr.state);
-    setEditIndex(index);
-    setShowForm(true);
-  };
-
-  const handleDelete = (index) => {
-    const updatedList = addresses.filter((_, i) => i !== index);
-    saveAddresses(updatedList);
-    if (selectedAddressIndex === index) {
-      setSelectedAddressIndex(null);
-    }
+    setl1("");
+    setl2("");
+    setzip("");
+    setstate("");
   };
 
   if (notLoggedIn) {
@@ -127,6 +107,7 @@ export default function Address() {
         Select Shipping Address
       </Typography>
 
+      {/* List of Saved Addresses */}
       {addresses.map((addr, idx) => (
         <Card
           key={idx}
@@ -134,42 +115,33 @@ export default function Address() {
           sx={{
             mb: 2,
             backgroundColor: selectedAddressIndex === idx ? "#d1ffd1" : "#f9f9f9",
-            position: "relative"
           }}
         >
           <CardContent>
             <Typography sx={{ color: "black" }}>{addr.line1}</Typography>
-            {addr.line2 && <Typography sx={{ color: "black" }}>{addr.line2}</Typography>}
+            {addr.line2 && (
+              <Typography sx={{ color: "black" }}>{addr.line2}</Typography>
+            )}
             <Typography sx={{ color: "black" }}>
               {addr.state} - {addr.zipCode}
             </Typography>
-            <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
-              <Button
-                variant="outlined"
-                onClick={() => setSelectedAddressIndex(idx)}
-              >
-                {selectedAddressIndex === idx ? "Selected" : "Use this"}
-              </Button>
-              <IconButton color="primary" onClick={() => handleEdit(idx)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton color="error" onClick={() => handleDelete(idx)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
+            <Button
+              variant="outlined"
+              sx={{ mt: 1 }}
+              onClick={() => setSelectedAddressIndex(idx)}
+            >
+              {selectedAddressIndex === idx ? "Selected" : "Use this address"}
+            </Button>
           </CardContent>
         </Card>
       ))}
 
+      {/* Add New Address */}
       {!showForm ? (
         <Button
           variant="contained"
           fullWidth
-          onClick={() => {
-            setShowForm(true);
-            setEditIndex(null); // ensure new entry
-            setl1(""); setl2(""); setzip(""); setstate("");
-          }}
+          onClick={() => setShowForm(true)}
           sx={{ mt: 3 }}
         >
           Add New Address
@@ -177,7 +149,7 @@ export default function Address() {
       ) : (
         <>
           <Typography variant="h6" sx={{ mt: 4, color: "black" }}>
-            {editIndex !== null ? "Edit Address" : "Add New Address"}
+            Add New Address
           </Typography>
 
           {error && (
@@ -229,18 +201,13 @@ export default function Address() {
             ))}
           </TextField>
 
-          <Button variant="contained" fullWidth onClick={handleSubmit}>
-            {editIndex !== null ? "Update Address" : "Save Address"}
+          <Button variant="contained" fullWidth onClick={handleAddAddress}>
+            Save Address
           </Button>
-
           <Button
             variant="text"
             fullWidth
-            onClick={() => {
-              setShowForm(false);
-              setEditIndex(null);
-              setError("");
-            }}
+            onClick={() => setShowForm(false)}
             sx={{ mt: 1 }}
           >
             Cancel

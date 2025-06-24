@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { addToFavourites, isFavourite } from "../utils/favouritestorage.js";
 import {
   Dialog,
   DialogTitle,
@@ -8,40 +7,36 @@ import {
   IconButton,
   Typography,
   Box,
-  Rating
+  Rating,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavourite } from "../store/favouritesSlice";
 
 const ProductDialog = ({ product, onClose }) => {
+  const dispatch = useDispatch();
+  const favourites = useSelector((state) => state.favourites);
   const [added, setAdded] = useState(false);
 
-  // Refresh `added` state whenever product changes or dialog is reopened
   useEffect(() => {
     if (product && product.id) {
-      const checkFavourite = () => {
-        const fav = isFavourite(product.id);
-        setAdded(fav);
-      };
-      checkFavourite();
+      const fav = favourites.some((p) => p.id === product.id);
+      setAdded(fav);
     }
-  }, [product]);
+  }, [product, favourites]);
 
   const handleAddToFavourites = () => {
-  if (!product) return;
+    if (!product) return;
 
-  const user = localStorage.getItem("currentUser");
-  if (!user) {
-    alert("Please log in to add favourites.");
-    return;
-  }
+    const user = localStorage.getItem("currentUserName");
+    if (!user) {
+      alert("Please log in to add favourites.");
+      return;
+    }
 
-  const success = addToFavourites(product);
-  if (success) {
+    dispatch(addFavourite(product));
     setAdded(true);
-  } else {
-    setAdded(true);
-  }
-};
+  };
 
   return (
     <Dialog open={!!product} onClose={onClose} fullWidth maxWidth="sm">
@@ -54,7 +49,7 @@ const ProductDialog = ({ product, onClose }) => {
             position: "absolute",
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500]
+            color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
@@ -70,7 +65,7 @@ const ProductDialog = ({ product, onClose }) => {
             mb: 2,
             height: 300,
             backgroundColor: "#f5f5f5",
-            borderRadius: 2
+            borderRadius: 2,
           }}
         >
           <Box
@@ -80,7 +75,7 @@ const ProductDialog = ({ product, onClose }) => {
             sx={{
               maxHeight: "100%",
               maxWidth: "100%",
-              objectFit: "contain"
+              objectFit: "contain",
             }}
           />
         </Box>
@@ -109,12 +104,12 @@ const ProductDialog = ({ product, onClose }) => {
               cursor: "pointer",
               userSelect: "none",
               "&:hover": {
-                color: "brown"
-              }
+                color: "brown",
+              },
             }}
             onClick={handleAddToFavourites}
           >
-            {added ? "✅ Added to Favourites" : "❤️ Add to Favourites"}
+            {added ? "✅ Added to Cart" : "🛒 Add to Cart"}
           </Typography>
         </Box>
       </DialogContent>
