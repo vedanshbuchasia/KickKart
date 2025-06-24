@@ -19,17 +19,17 @@ export default function OrderSummary() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("currentUserName");
+    const user = localStorage.getItem("currentUser"); // ✅ Fixed key
     if (!user) {
       navigate("/login");
       return;
     }
 
-    // ✅ Fix: Load favourites saved under the current user
+    // ✅ Load favourites for current user
     const allFavs = JSON.parse(localStorage.getItem("favourites")) || {};
     setFavourites(allFavs[user] || []);
 
-    // ✅ Fix: Load selected address
+    // ✅ Load selected address
     const selected = JSON.parse(localStorage.getItem("selectedAddress"));
     setAddress(selected);
   }, [navigate]);
@@ -38,8 +38,6 @@ export default function OrderSummary() {
 
   const handleConfirm = () => {
     alert("🎉 Order placed successfully!");
-    // Optionally: clear favourites
-    // localStorage.setItem("favourites", JSON.stringify({ [currentUser]: [] }));
     navigate("/");
   };
 
