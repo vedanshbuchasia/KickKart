@@ -132,6 +132,22 @@ export default function Address() {
             >
               {selectedAddressIndex === idx ? "Selected" : "Use this address"}
             </Button>
+
+            {selectedAddressIndex === idx && (
+              <Button
+                variant="contained"
+                color="success"
+                fullWidth
+                sx={{ mt: 1 }}
+                onClick={() => {
+                  const selectedAddress = addresses[idx];
+                  localStorage.setItem("selectedAddress", JSON.stringify(selectedAddress));
+                  navigate("/OrderSummary");
+                }}
+              >
+                Proceed to Order Summary
+              </Button>
+            )}
           </CardContent>
         </Card>
       ))}

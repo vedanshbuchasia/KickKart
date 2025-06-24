@@ -8,6 +8,7 @@ import Nav from "./components/NavBar";
 import { useDispatch } from "react-redux";
 import { loadUserFavourites } from "./store/favouritesSlice";
 import Address from "./pages/address.js";
+import OrderSummary from "./pages/OrderSummary.js";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/address" element={<Address />} />
+          <Route path="/OrderSummary" element={<OrderSummary />} />
         </Routes>
       </Box>
     </BrowserRouter>

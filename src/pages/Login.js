@@ -1,252 +1,185 @@
-import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Alert,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Card,
-  CardContent,
-  IconButton,
-} from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Button, Box, Typography, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
+import { loadUserFavourites } from "../store/favouritesSlice";
 
-export default function Address() {
-  const navigate = useNavigate();
-  const currentUser = localStorage.getItem("currentUserName ");
-
-  const [addresses, setAddresses] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
-  const [notLoggedIn, setNotLoggedIn] = useState(false);
-
-  const [l1, setl1] = useState("");
-  const [l2, setl2] = useState("");
-  const [zip, setzip] = useState("");
-  const [state, setstate] = useState("");
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const states = [
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
-    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-    "Uttar Pradesh", "Uttarakhand", "West Bengal"
-  ];
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  useEffect(() => {
-    if (!currentUser) {
-      setNotLoggedIn(true);
-      return;
-    }
+  const getUsers = () => JSON.parse(localStorage.getItem("users")) || {};
+  const getUserNames = () => JSON.parse(localStorage.getItem("userNames")) || {};
 
-    const all = JSON.parse(localStorage.getItem("addresses")) || {};
-    setAddresses(all[currentUser] || []);
-  }, [currentUser]);
-
-  const saveAddresses = (updatedList) => {
-    const all = JSON.parse(localStorage.getItem("addresses")) || {};
-    all[currentUser] = updatedList;
-    localStorage.setItem("addresses", JSON.stringify(all));
-    setAddresses(updatedList);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    isRegistering ? handleRegister() : handleLogin();
   };
 
-  const handleSubmit = () => {
-    if (!l1 || !zip || !state) {
-      setError("Please fill in all required fields.");
+  const handleLogin = () => {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setError("Email and password are required.");
+      setSuccess("");
       return;
     }
 
-    if (!/^\d{5,6}$/.test(zip)) {
-      setError("Please enter a valid 5 or 6 digit zip code.");
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Invalid email format.");
+      setSuccess("");
       return;
     }
 
-    const newAddress = { line1: l1, line2: l2, zipCode: zip, state };
+    const users = getUsers();
+    const userNames = getUserNames();
 
-    let updatedList = [...addresses];
-    if (editIndex !== null) {
-      updatedList[editIndex] = newAddress;
+    if (!users[trimmedEmail]) {
+      setError("User not found. Please register first.");
+      setSuccess("");
+    } else if (users[trimmedEmail] !== trimmedPassword) {
+      setError("Incorrect password.");
+      setSuccess("");
     } else {
-      updatedList.push(newAddress);
-    }
-
-    saveAddresses(updatedList);
-    setShowForm(false);
-    setEditIndex(null);
-    setl1(""); setl2(""); setzip(""); setstate("");
-    setError("");
-  };
-
-  const handleEdit = (index) => {
-    const addr = addresses[index];
-    setl1(addr.line1);
-    setl2(addr.line2 || "");
-    setzip(addr.zipCode);
-    setstate(addr.state);
-    setEditIndex(index);
-    setShowForm(true);
-  };
-
-  const handleDelete = (index) => {
-    const updatedList = addresses.filter((_, i) => i !== index);
-    saveAddresses(updatedList);
-    if (selectedAddressIndex === index) {
-      setSelectedAddressIndex(null);
+      localStorage.setItem("currentUser", trimmedEmail);
+      localStorage.setItem("currentUserName", userNames[trimmedEmail] || "User");
+      setError("");
+      setSuccess("Login successful!");
+      dispatch(loadUserFavourites());
+      navigate("/");
     }
   };
 
-  if (notLoggedIn) {
-    return (
-      <Dialog open>
-        <DialogTitle>Login Required</DialogTitle>
-        <DialogContent>
-          <Typography>Please log in to continue to checkout.</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => navigate("/login")} variant="contained">
-            Go to Login
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+  const handleRegister = () => {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedName = fullName.trim();
+
+    if (!trimmedEmail || !trimmedPassword || !trimmedName) {
+      setError("All fields are required.");
+      setSuccess("");
+      return;
+    }
+
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Invalid email format.");
+      setSuccess("");
+      return;
+    }
+
+    const users = getUsers();
+    const userNames = getUserNames();
+
+    if (users[trimmedEmail]) {
+      setError("User already exists. Please login.");
+      setSuccess("");
+    } else {
+      const updatedUsers = { ...users, [trimmedEmail]: trimmedPassword };
+      const updatedNames = { ...userNames, [trimmedEmail]: trimmedName };
+
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      localStorage.setItem("userNames", JSON.stringify(updatedNames));
+      localStorage.setItem("currentUser", trimmedEmail);
+      localStorage.setItem("currentUserName", trimmedName);
+      setError("");
+      setSuccess("Registration successful!");
+      dispatch(loadUserFavourites());
+      navigate("/");
+    }
+  };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 6, bgcolor: "#fff", p: 4, borderRadius: 2 }}>
-      <Typography variant="h5" sx={{ mb: 3, color: "black" }}>
-        Select Shipping Address
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ maxWidth: 400, mx: "auto", mt: 10 }}
+    >
+      <Typography variant="h5" gutterBottom sx={{ color: "black" }}>
+        {isRegistering ? "Register" : "Login"}
       </Typography>
 
-      {addresses.map((addr, idx) => (
-        <Card
-          key={idx}
-          variant="outlined"
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {success}
+        </Alert>
+      )}
+
+      {isRegistering && (
+        <TextField
+          fullWidth
+          label="Enter your full name"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
           sx={{
             mb: 2,
-            backgroundColor: selectedAddressIndex === idx ? "#d1ffd1" : "#f9f9f9",
-            position: "relative"
+            backgroundColor: "white",
+            input: { color: "black" },
+            label: { color: "black" },
           }}
-        >
-          <CardContent>
-            <Typography sx={{ color: "black" }}>{addr.line1}</Typography>
-            {addr.line2 && <Typography sx={{ color: "black" }}>{addr.line2}</Typography>}
-            <Typography sx={{ color: "black" }}>
-              {addr.state} - {addr.zipCode}
-            </Typography>
-            <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
-              <Button
-                variant="outlined"
-                onClick={() => setSelectedAddressIndex(idx)}
-              >
-                {selectedAddressIndex === idx ? "Selected" : "Use this"}
-              </Button>
-              <IconButton color="primary" onClick={() => handleEdit(idx)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton color="error" onClick={() => handleDelete(idx)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
-
-      {!showForm ? (
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            setShowForm(true);
-            setEditIndex(null); // ensure new entry
-            setl1(""); setl2(""); setzip(""); setstate("");
-          }}
-          sx={{ mt: 3 }}
-        >
-          Add New Address
-        </Button>
-      ) : (
-        <>
-          <Typography variant="h6" sx={{ mt: 4, color: "black" }}>
-            {editIndex !== null ? "Edit Address" : "Add New Address"}
-          </Typography>
-
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-
-          <TextField
-            fullWidth
-            required
-            label="Address Line 1"
-            value={l1}
-            onChange={(e) => setl1(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            label="Address Line 2 (Optional)"
-            value={l2}
-            onChange={(e) => setl2(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-
-          <TextField
-            fullWidth
-            required
-            label="Zip Code"
-            value={zip}
-            onChange={(e) => setzip(e.target.value)}
-            sx={{ mb: 2 }}
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-          />
-
-          <TextField
-            fullWidth
-            required
-            select
-            label="State"
-            value={state}
-            onChange={(e) => setstate(e.target.value)}
-            sx={{ mb: 3 }}
-          >
-            {states.map((s) => (
-              <MenuItem key={s} value={s}>
-                {s}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <Button variant="contained" fullWidth onClick={handleSubmit}>
-            {editIndex !== null ? "Update Address" : "Save Address"}
-          </Button>
-
-          <Button
-            variant="text"
-            fullWidth
-            onClick={() => {
-              setShowForm(false);
-              setEditIndex(null);
-              setError("");
-            }}
-            sx={{ mt: 1 }}
-          >
-            Cancel
-          </Button>
-        </>
+        />
       )}
+
+      <TextField
+        fullWidth
+        label="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        sx={{
+          mb: 2,
+          backgroundColor: "white",
+          input: { color: "black" },
+          label: { color: "black" },
+        }}
+      />
+
+      <TextField
+        fullWidth
+        label="Enter your password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        sx={{
+          mb: 2,
+          backgroundColor: "white",
+          input: { color: "black" },
+          label: { color: "black" },
+        }}
+      />
+
+      <Button fullWidth variant="contained" type="submit" sx={{ mb: 1 }}>
+        {isRegistering ? "Register" : "Login"}
+      </Button>
+
+      <Button
+        fullWidth
+        variant="text"
+        onClick={() => {
+          setIsRegistering(!isRegistering);
+          setError("");
+          setSuccess("");
+          setEmail("");
+          setPassword("");
+          setFullName("");
+        }}
+      >
+        {isRegistering
+          ? "Already have an account? Login"
+          : "New user? Register here"}
+      </Button>
     </Box>
   );
 }
