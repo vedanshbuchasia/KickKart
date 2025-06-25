@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { clearFavourites } from "../store/favouritesSlice"; // adjust path if needed
+import { clearFavourites } from "../store/favouritesSlice"; 
 
 export default function OrderSummary() {
   const [favourites, setFavourites] = useState([]);
@@ -53,7 +53,7 @@ export default function OrderSummary() {
       return;
     }
 
-    // Save to order history
+    
     const allOrders = JSON.parse(localStorage.getItem("orderHistory")) || {};
     const userOrders = allOrders[user] || [];
 
@@ -72,15 +72,15 @@ export default function OrderSummary() {
     };
     localStorage.setItem("orderHistory", JSON.stringify(updatedOrders));
 
-    // Clear favourites from localStorage
+    
     const allFavs = JSON.parse(localStorage.getItem("favourites")) || {};
     allFavs[user] = [];
     localStorage.setItem("favourites", JSON.stringify(allFavs));
 
-    // Clear Redux state
+    
     dispatch(clearFavourites());
 
-    // Update local state
+    
     setFavourites([]);
     alert("🎉 Order placed successfully!");
     navigate("/OrderHistory");
@@ -102,7 +102,7 @@ export default function OrderSummary() {
         Order Summary
       </Typography>
 
-      {/* Product List */}
+      {}
       <Paper sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" gutterBottom>
           🛍 Products
@@ -127,7 +127,7 @@ export default function OrderSummary() {
         </Grid>
       </Paper>
 
-      {/* Address */}
+      {}
       <Paper sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" gutterBottom>
           🚚 Shipping Address
@@ -139,7 +139,7 @@ export default function OrderSummary() {
         </Typography>
       </Paper>
 
-      {/* Payment Method */}
+      {}
       <Paper sx={{ p: 3, mb: 4 }}>
         <FormControl component="fieldset">
           <FormLabel component="legend">💳 Payment Method</FormLabel>
@@ -161,7 +161,7 @@ export default function OrderSummary() {
         )}
       </Paper>
 
-      {/* Total & Confirm */}
+      {}
       <Paper sx={{ p: 3 }}>
         <Typography variant="h6">💰 Total: ${total.toFixed(2)}</Typography>
         <Divider sx={{ my: 2 }} />

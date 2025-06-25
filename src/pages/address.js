@@ -107,7 +107,7 @@ export default function Address() {
         Select Shipping Address
       </Typography>
 
-      {/* List of Saved Addresses */}
+      {}
       {addresses.map((addr, idx) => (
         <Card
           key={idx}
@@ -152,7 +152,7 @@ export default function Address() {
         </Card>
       ))}
 
-      {/* Add New Address */}
+      {}
       {!showForm ? (
         <Button
           variant="contained"

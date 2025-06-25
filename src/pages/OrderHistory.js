@@ -44,8 +44,8 @@ export default function OrderHistory() {
       </Typography>
 
       {orders
-        .slice() // copy
-        .reverse() // latest first
+        .slice() 
+        .reverse() 
         .map((order) => (
           <Paper key={order.id} sx={{ p: 3, mb: 4 }}>
             <Typography variant="h6">
@@ -60,7 +60,7 @@ export default function OrderHistory() {
               💰 Total: ${order.total.toFixed(2)}
             </Typography>
 
-            {/* Product List */}
+            {}
             <Grid container spacing={2}>
               {order.items.map((item) => (
                 <Grid item xs={12} sm={6} md={4} key={item.id}>
@@ -84,7 +84,7 @@ export default function OrderHistory() {
               ))}
             </Grid>
 
-            {/* Shipping Address */}
+            {}
             <Divider sx={{ my: 2 }} />
             <Typography variant="subtitle2">📍 Shipping Address:</Typography>
             <Typography>{order.address.line1}</Typography>

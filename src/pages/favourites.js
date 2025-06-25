@@ -37,7 +37,7 @@ export default function Favourites() {
 
   const total = favourites.reduce((sum, item) => sum + item.price, 0);
 
-  // 🔒 Show login required dialog
+  
   if (notLoggedIn) {
     return (
       <Dialog open>
@@ -58,7 +58,7 @@ export default function Favourites() {
     );
   }
 
-  // 🛒 Show empty cart message
+  
   if (favourites.length === 0) {
     return (
       <Box textAlign="center" mt={5}>
@@ -78,7 +78,7 @@ export default function Favourites() {
         p: 4,
       }}
     >
-      {/* Left: Product Cards */}
+      {}
       <Box sx={{ flex: 3 }}>
         <Typography sx={{ color: "black", mb: 2 }} variant="h4">
           Your Favourites
@@ -130,7 +130,7 @@ export default function Favourites() {
         </Grid>
       </Box>
 
-      {/* Right: Summary */}
+      {}
       <Box
         sx={{
           flex: 1,
