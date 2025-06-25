@@ -25,7 +25,7 @@ export default function Favourites() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("currentUser");
+    const user = localStorage.getItem("currentUserName");
     if (!user) {
       setNotLoggedIn(true);
     }
@@ -63,7 +63,7 @@ export default function Favourites() {
     return (
       <Box textAlign="center" mt={5}>
         <Typography sx={{ color: "black" }} variant="h5">
-          Your favourites list is empty 💔
+          Your cart is empty 💔
         </Typography>
       </Box>
     );
@@ -112,7 +112,7 @@ export default function Favourites() {
                     {product.title}
                   </Typography>
                   <Typography variant="body2">
-                    ₹{product.price.toFixed(2)}
+                    ${product.price.toFixed(2)}
                   </Typography>
                 </CardContent>
                 <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
@@ -153,12 +153,12 @@ export default function Favourites() {
           </Typography>
           {favourites.map((item) => (
             <Typography key={item.id} sx={{ color: "black" }}>
-              • {item.title} — ₹{item.price.toFixed(2)}
+              • {item.title} — ${item.price.toFixed(2)}
             </Typography>
           ))}
           <Divider sx={{ my: 1 }} />
           <Typography sx={{ color: "black", fontWeight: "bold", mb: 2 }}>
-            Total: ₹{total.toFixed(2)}
+            Total: ${total.toFixed(2)}
           </Typography>
           <Button
             fullWidth

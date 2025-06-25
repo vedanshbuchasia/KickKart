@@ -1,12 +1,11 @@
-// store/favouritesSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 // Helpers
-const getCurrentUser = () => localStorage.getItem("currentUser");
+const getCurrentUser = () => localStorage.getItem("currentUserName");
 
 const loadFavourites = () => {
   const user = getCurrentUser();
-  if (!user) return []; // ✅ Ensure no user = no favourites
+  if (!user) return [];
   const allFavs = JSON.parse(localStorage.getItem("favourites")) || {};
   return allFavs[user] || [];
 };
@@ -21,7 +20,7 @@ const saveFavourites = (favs) => {
 
 const favouritesSlice = createSlice({
   name: "favourites",
-  initialState: loadFavourites(), // ✅ loads only for logged-in user
+  initialState: loadFavourites(),
   reducers: {
     addFavourite: (state, action) => {
       const exists = state.some((item) => item.id === action.payload.id);
@@ -38,10 +37,15 @@ const favouritesSlice = createSlice({
       return updated;
     },
     loadUserFavourites: () => {
-      return loadFavourites(); // ✅ only loads if user exists
+      return loadFavourites();
     },
     clearFavourites: () => {
-      return []; // ✅ clears on logout
+      const user = getCurrentUser();
+      if (!user) return [];
+      const all = JSON.parse(localStorage.getItem("favourites")) || {};
+      all[user] = [];
+      localStorage.setItem("favourites", JSON.stringify(all));
+      return [];
     },
   },
 });

@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { loadUserFavourites } from "./store/favouritesSlice";
 import Address from "./pages/address.js";
 import OrderSummary from "./pages/OrderSummary.js";
+import OrderHistory from "./pages/OrderHistory.js";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,6 +32,7 @@ function App() {
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/address" element={<Address />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
+          <Route path="/OrderHistory" element={<OrderHistory />} />
         </Routes>
       </Box>
     </BrowserRouter>
