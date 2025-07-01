@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Container,
+  CircularProgress,
+} from "@mui/material";
 import ProductGrid from "../components/ProductGrid";
 import ProductDialog from "../components/ProductDialog";
+import Slideshow from "../components/Slideshow"; // ✅ import the slideshow
 
 export default function Home({ searchTerm, setSearchTerm }) {
   const [products, setProducts] = useState([]);
@@ -9,7 +14,7 @@ export default function Home({ searchTerm, setSearchTerm }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
+    fetch("http://localhost:5000/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.products);
@@ -27,6 +32,13 @@ export default function Home({ searchTerm, setSearchTerm }) {
 
   return (
     <Container sx={{ padding: 4 }}>
+      {/* ✅ Centered Slideshow with max width */}
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
+        <Box sx={{ width: "100%", maxWidth: 1000 }}>
+          <Slideshow />
+        </Box>
+      </Box>
+
       {loading ? (
         <Box textAlign="center">
           <CircularProgress />

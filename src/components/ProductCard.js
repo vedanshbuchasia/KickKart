@@ -3,26 +3,27 @@ import {
   Card,
   CardContent,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
 
 const ProductCard = ({ product, onClick }) => (
   <Card
     onClick={onClick}
     sx={{
-      height: 350,
+      height: 380,
       width: 300,
       cursor: "pointer",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
       justifyContent: "space-between",
       transition: "transform 0.3s, box-shadow 0.3s",
       "&:hover": {
         transform: "translateY(-5px)",
         boxShadow: 6,
       },
-      p: 1,
+      p: 2,
+      borderRadius: "20px",
+      backgroundColor: "#fff",
     }}
   >
     <Box
@@ -32,9 +33,8 @@ const ProductCard = ({ product, onClick }) => (
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
-        borderRadius: "20px",
         overflow: "hidden",
+        mb: 2,
       }}
     >
       <Box
@@ -42,21 +42,18 @@ const ProductCard = ({ product, onClick }) => (
         src={product.thumbnail}
         alt={product.title}
         sx={{
-          maxHeight: "100%",
-          maxWidth: "100%",
+          height: "100%",
+          width: "auto",
           objectFit: "contain",
-          transition: "transform 0.3s ease",
-          "&:hover": {
-            transform: "scale(1.1)",
-          },
         }}
       />
     </Box>
-    <CardContent sx={{ width: "100%", textAlign: "center" }}>
-      <Typography variant="h6" noWrap>
+
+    <CardContent sx={{ textAlign: "center", p: 0 }}>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
         {product.title}
       </Typography>
-      <Typography color="text.secondary">
+      <Typography variant="subtitle1" color="text.secondary">
         ${product.price}
       </Typography>
     </CardContent>
@@ -64,3 +61,4 @@ const ProductCard = ({ product, onClick }) => (
 );
 
 export default ProductCard;
+

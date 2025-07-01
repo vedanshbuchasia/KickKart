@@ -10,6 +10,8 @@ import { loadUserFavourites } from "./store/favouritesSlice";
 import Address from "./pages/address.js";
 import OrderSummary from "./pages/OrderSummary.js";
 import OrderHistory from "./pages/OrderHistory.js";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
