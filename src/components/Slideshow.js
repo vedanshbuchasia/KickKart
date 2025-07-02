@@ -1,4 +1,5 @@
 import React from "react";
+
 import Slider from "react-slick";
 import {
   Box,
@@ -12,8 +13,7 @@ import {
 
 const slides = [
   {
-    image:
-      "https://images.unsplash.com/photo-1605408499391-6368c628ef42?q=80&w=800&auto=format&fit=crop",
+    image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Nike Air Max 270",
     price: "$149.99",
     description:
@@ -27,6 +27,14 @@ const slides = [
     description:
       "Ultraboost 22 provides incredible energy return and cushioning, built for runners who need support and comfort.",
     category: "Adidas",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1715003132895-b10a23d3c90f?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "PUMA Speedcat OG",
+    price: "$149.00",
+    description:
+      "PUMA Speedcat OG: A sleek motorsport-inspired sneaker with a low-profile silhouette, originally designed for Formula 1 drivers. Perfect for stylish everyday wear with a retro vibe and premium suede finish.",
+    category: "Puma",
   },
 ];
 

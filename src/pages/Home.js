@@ -14,7 +14,7 @@ export default function Home({ searchTerm, setSearchTerm }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/products")
+    fetch("https://my-api-7fu2.onrender.com/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.products);

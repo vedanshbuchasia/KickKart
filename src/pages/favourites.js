@@ -43,7 +43,7 @@ export default function Favourites() {
       <Dialog open>
         <DialogTitle>Login Required</DialogTitle>
         <DialogContent>
-          <Typography>Please log in to view your favourites.</Typography>
+          <Typography>Please log in to view your cart.</Typography>
         </DialogContent>
         <DialogActions>
           <Button
@@ -81,7 +81,7 @@ export default function Favourites() {
       {}
       <Box sx={{ flex: 3 }}>
         <Typography sx={{ color: "black", mb: 2 }} variant="h4">
-          Your Favourites
+          Your Cart 
         </Typography>
         <Grid container spacing={3}>
           {favourites.map((product) => (
