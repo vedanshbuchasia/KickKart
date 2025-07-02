@@ -57,7 +57,11 @@ export default function NavBar({ searchTerm, setSearchTerm }) {
         <Toolbar sx={{ justifyContent: "center", gap: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <IconButton onClick={() => navigate("/")}>
-              <Avatar src={logo} alt="ShopNest Logo" sx={{ marginRight: 2 }} />
+              <Avatar
+                src={logo}
+                alt="ShopNest Logo"
+                sx={{ marginRight: 2, width: 80, height: 70 }}
+              />
             </IconButton>
           </Box>
 
@@ -107,3 +111,4 @@ export default function NavBar({ searchTerm, setSearchTerm }) {
     </Box>
   );
 }
+
