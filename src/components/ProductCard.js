@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 
 const ProductCard = ({ product, onClick }) => (
   <Card
     onClick={onClick}
     sx={{
-      height: 380,
-      width: 300,
+      width: 260,
+      height: 320,
       cursor: "pointer",
       display: "flex",
       flexDirection: "column",
@@ -22,13 +17,13 @@ const ProductCard = ({ product, onClick }) => (
         boxShadow: 6,
       },
       p: 2,
-      borderRadius: "20px",
+      borderRadius: 4,
       backgroundColor: "#fff",
     }}
   >
     <Box
       sx={{
-        height: 200,
+        height: 150,
         width: "100%",
         display: "flex",
         justifyContent: "center",
@@ -42,18 +37,18 @@ const ProductCard = ({ product, onClick }) => (
         src={product.thumbnail}
         alt={product.title}
         sx={{
-          height: "100%",
-          width: "auto",
+          maxHeight: "100%",
+          maxWidth: "100%",
           objectFit: "contain",
         }}
       />
     </Box>
 
     <CardContent sx={{ textAlign: "center", p: 0 }}>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
         {product.title}
       </Typography>
-      <Typography variant="subtitle1" color="text.secondary">
+      <Typography variant="body2" color="text.secondary">
         ${product.price}
       </Typography>
     </CardContent>
@@ -61,4 +56,3 @@ const ProductCard = ({ product, onClick }) => (
 );
 
 export default ProductCard;
-

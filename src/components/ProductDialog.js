@@ -38,6 +38,10 @@ const ProductDialog = ({ product, onClose }) => {
     setAdded(true);
   };
 
+  const originalPrice = product
+    ? (product.price / (1 - product.discountPercentage / 100)).toFixed(2)
+    : null;
+
   return (
     <Dialog open={!!product} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
@@ -83,7 +87,16 @@ const ProductDialog = ({ product, onClose }) => {
         <DialogContentText sx={{ color: "text.primary" }}>
           <strong>Description:</strong> {product?.description}
           <br />
-          <strong>Price:</strong> ${product?.price}
+          <strong>Price:</strong>{" "}
+          <Typography component="span" sx={{ textDecoration: "line-through", mr: 1, color: "gray" }}>
+            ${originalPrice}
+          </Typography>
+          <Typography component="span" sx={{ color: "green", fontWeight: "bold", mr: 1 }}>
+            ${product?.price}
+          </Typography>
+          <Typography component="span" sx={{ color: "red", fontWeight: 500 }}>
+            ({product?.discountPercentage}% OFF)
+          </Typography>
           <br />
           <strong>Rating:</strong>{" "}
           <Rating
