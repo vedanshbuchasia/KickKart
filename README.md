@@ -1,4 +1,4 @@
-# ⌚️ Cloket – Watch Ecommerce Website
+# 👟 KickKart – Shoes Ecommerce Website
 
 KickKart is a modern, responsive e-commerce website built using React.js and Material-UI.
 It features product listings, filtering, smart search, and a user-friendly shopping experience.
