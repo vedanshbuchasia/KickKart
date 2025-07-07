@@ -42,7 +42,7 @@ ChatGPT (OpenAI)
 Stack Overflow
 
 This project was developed as part of a web development internship/training at Hidden Brains.
-API: https://watch-api-g7j5.onrender.com/api/watcheshttps://my-api-7fu2.onrender.com/products
+API: https://my-api-7fu2.onrender.com/products
 
 ---
 
