@@ -83,7 +83,7 @@ export default function Home({ searchTerm, setSearchTerm }) {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        backgroundColor: "#fceee6", // your page bg
+        backgroundColor: "#fceee6",
       }}
     >
       <Container sx={{ flex: 1, py: 4 }}>
@@ -99,9 +99,24 @@ export default function Home({ searchTerm, setSearchTerm }) {
             <CircularProgress />
           </Box>
         ) : (
-          <Box sx={{ display: "flex" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: {
+                xs: "column",
+                md: "row",
+              },
+            }}
+          >
             {/* Sidebar Filters */}
-            <Box sx={{ width: 250, mr: 4, color: "black" }}>
+            <Box
+              sx={{
+                width: { xs: "100%", md: 250 },
+                mr: { md: 4 },
+                mb: { xs: 4, md: 0 },
+                color: "black",
+              }}
+            >
               {/* Brand Filter */}
               <Typography variant="h6" gutterBottom>
                 Filter by Brand
@@ -117,7 +132,11 @@ export default function Home({ searchTerm, setSearchTerm }) {
                         onChange={() => handleBrandChange(brand)}
                       />
                     }
-                    label={brand}
+                    label={
+                      <Typography variant="body2" sx={{ fontSize: "0.85rem" }}>
+                        {brand}
+                      </Typography>
+                    }
                   />
                 ))}
               </FormGroup>
@@ -175,11 +194,13 @@ export default function Home({ searchTerm, setSearchTerm }) {
                       <Checkbox
                         size="small"
                         checked={selectedReturns.includes(policy.toLowerCase())}
-                        onChange={() => handleReturnChange(policy.toLowerCase())}
+                        onChange={() =>
+                          handleReturnChange(policy.toLowerCase())
+                        }
                       />
                     }
                     label={
-                      <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
+                      <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
                         {policy}
                       </Typography>
                     }
@@ -204,7 +225,7 @@ export default function Home({ searchTerm, setSearchTerm }) {
         />
       </Container>
 
-      {/* ✅ Footer placed outside container and fills full width */}
+      {/* Footer */}
       <Footer />
     </Box>
   );
