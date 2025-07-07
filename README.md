@@ -48,7 +48,7 @@ API: https://watch-api-g7j5.onrender.com/api/watcheshttps://my-api-7fu2.onrender
 
 ## 🚀 Getting Started
 
-bash
+```bash
 git clone https://github.com/vedanshbuchasia/KickKart.git
 cd cloket
 npm install
