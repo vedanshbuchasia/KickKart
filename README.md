@@ -50,6 +50,6 @@ API: https://my-api-7fu2.onrender.com/products
 
 ```bash
 git clone https://github.com/vedanshbuchasia/KickKart.git
-cd cloket
+cd KickKart
 npm install
 npm start
